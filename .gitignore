@@ -29,3 +29,10 @@ logs/
 # Temporary
 *.tmp
 *.swp
+
+# Local backups / archives
+*.bak
+*.bak2
+*.bak3
+*.bak-debug
+*.zip
