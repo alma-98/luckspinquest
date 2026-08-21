@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface SpinSessionRepository
         extends JpaRepository<SpinSession, Long> {
 
+    long countByUserUserId(Long userId);
+
     Optional<SpinSession> findBySessionReference(
         String sessionReference
     );

@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface SpinResultRepository
         extends JpaRepository<SpinResult, Long> {
 
+    long countByUserUserId(Long userId);
+
     Optional<SpinResult> findByResultReference(
         String resultReference
     );

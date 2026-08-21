@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface ReferralRepository
         extends JpaRepository<Referral, Long> {
 
+    long countByReferrerUserUserId(Long referrerUserId);
+
     Optional<Referral> findByReferredUserUserId(
         Long referredUserId
     );

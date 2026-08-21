@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface RedemptionRepository
         extends JpaRepository<Redemption, Long> {
 
+    long countByUserUserId(Long userId);
+
     Optional<Redemption> findByReferenceCode(
         String referenceCode
     );

@@ -3,6 +3,7 @@ package com.luckspinquest.controller;
 import com.luckspinquest.dto.user.UpdateUserRequest;
 import com.luckspinquest.dto.user.UserResponse;
 import com.luckspinquest.service.UserService;
+import com.luckspinquest.service.UserStatisticsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +14,14 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final UserStatisticsService userStatisticsService;
 
-    public UserController(UserService userService) {
+    public UserController(
+            UserService userService,
+            UserStatisticsService userStatisticsService
+    ) {
         this.userService = userService;
+        this.userStatisticsService = userStatisticsService;
     }
 
     @GetMapping("/me")
@@ -54,10 +60,7 @@ public class UserController {
     @GetMapping("/me/statistics")
     public ResponseEntity<?> getUserStatistics() {
         return ResponseEntity.ok(
-                Map.of(
-                        "message", "User statistics",
-                        "status", "TODO"
-                )
+                userStatisticsService.getStatistics()
         );
     }
 }
