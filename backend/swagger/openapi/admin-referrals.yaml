@@ -1,0 +1,83 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Admin Referrals API
+  version: 1.0.0
+  description: Administrative referral management API for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Admin Referrals
+    description: Administrative referral APIs
+
+paths:
+
+  /api/v1/admin/referrals:
+    get:
+      tags:
+        - Admin Referrals
+      summary: List referrals
+      operationId: adminListReferrals
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Referrals retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+
+  /api/v1/admin/referrals/{id}:
+    get:
+      tags:
+        - Admin Referrals
+      summary: Get referral detail
+      operationId: adminGetReferral
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Referral ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Referral detail retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Referral not found
+
+  /api/v1/admin/referrals/statistics:
+    get:
+      tags:
+        - Admin Referrals
+      summary: Get referral statistics
+      operationId: adminGetReferralStatistics
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Referral statistics retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: ADMIN JWT access token

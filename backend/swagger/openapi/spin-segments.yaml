@@ -1,0 +1,178 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Spin Segments API
+  version: 1.0.0
+  description: Admin Lucky Spin wheel segment management API for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Spin Segments
+    description: Administrative Lucky Spin wheel segment APIs
+
+paths:
+
+  /api/v1/admin/spins/{spinId}/segments:
+    get:
+      tags:
+        - Spin Segments
+      summary: List wheel segments
+      description: List all wheel segments belonging to a Lucky Spin configuration.
+      operationId: listSpinSegments
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/SpinId'
+      responses:
+        '200':
+          description: Wheel segments retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Spin configuration not found
+
+    post:
+      tags:
+        - Spin Segments
+      summary: Create wheel segment
+      description: Create a new wheel segment for a Lucky Spin configuration.
+      operationId: createSpinSegment
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/SpinId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpinSegmentRequest'
+      responses:
+        '200':
+          description: Wheel segment created successfully
+        '201':
+          description: Wheel segment created successfully
+        '202':
+          description: Wheel segment creation accepted
+        '400':
+          description: Invalid wheel segment data
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Spin configuration not found
+
+  /api/v1/admin/spins/{spinId}/segments/{segmentId}:
+    put:
+      tags:
+        - Spin Segments
+      summary: Update wheel segment
+      description: Update an existing wheel segment.
+      operationId: updateSpinSegment
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/SpinId'
+        - $ref: '#/components/parameters/SegmentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpinSegmentRequest'
+      responses:
+        '200':
+          description: Wheel segment updated successfully
+        '204':
+          description: Wheel segment updated successfully with no response body
+        '400':
+          description: Invalid wheel segment data
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Wheel segment not found
+
+    delete:
+      tags:
+        - Spin Segments
+      summary: Delete wheel segment
+      description: Delete an existing wheel segment.
+      operationId: deleteSpinSegment
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/SpinId'
+        - $ref: '#/components/parameters/SegmentId'
+      responses:
+        '200':
+          description: Wheel segment deleted successfully
+        '204':
+          description: Wheel segment deleted successfully with no response body
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Wheel segment not found
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: ADMIN JWT access token
+
+  parameters:
+
+    SpinId:
+      name: spinId
+      in: path
+      required: true
+      description: Lucky Spin configuration ID
+      schema:
+        type: string
+      example: "spin-001"
+
+    SegmentId:
+      name: segmentId
+      in: path
+      required: true
+      description: Wheel segment ID
+      schema:
+        type: string
+      example: "segment-001"
+
+  schemas:
+
+    SpinSegmentRequest:
+      type: object
+      description: Lucky Spin wheel segment data.
+      properties:
+        label:
+          type: string
+          example: "10 Coins"
+        value:
+          type: number
+          format: double
+          example: 10
+        probability:
+          type: number
+          format: double
+          example: 25.0
+        position:
+          type: integer
+          example: 1
+        status:
+          type: string
+          example: ACTIVE

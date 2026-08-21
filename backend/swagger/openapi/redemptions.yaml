@@ -1,0 +1,145 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Redemptions API
+  version: 1.0.0
+  description: |
+    Redemptions API for LuckSpinQuest.
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Redemptions
+    description: Reward redemption management APIs
+
+paths:
+
+  /api/v1/redemptions:
+    post:
+      tags: [Redemptions]
+      summary: Create reward redemption
+      description: Create a reward redemption for the authenticated user.
+      operationId: createRedemption
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRedemptionRequest'
+      responses:
+        '200':
+          description: Redemption created successfully
+        '201':
+          description: Redemption created successfully
+        '202':
+          description: Redemption request accepted
+        '400':
+          description: Invalid redemption data
+        '401':
+          description: Authentication required
+        '409':
+          description: Redemption cannot be created
+
+    get:
+      tags: [Redemptions]
+      summary: List own redemptions
+      description: Get reward redemptions belonging to the authenticated user.
+      operationId: listRedemptions
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Redemptions retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/redemptions/{id}:
+    get:
+      tags: [Redemptions]
+      summary: Get redemption detail
+      description: Get details of a redemption belonging to the authenticated user.
+      operationId: getRedemption
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Redemption ID
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Redemption retrieved successfully
+        '401':
+          description: Authentication required
+        '404':
+          description: Redemption not found
+
+  /api/v1/redemptions/{id}/cancel:
+    post:
+      tags: [Redemptions]
+      summary: Cancel redemption
+      description: Cancel a redemption belonging to the authenticated user.
+      operationId: cancelRedemption
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Redemption ID
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Redemption cancelled successfully
+        '201':
+          description: Redemption cancellation processed
+        '202':
+          description: Redemption cancellation accepted
+        '400':
+          description: Redemption cannot be cancelled
+        '401':
+          description: Authentication required
+        '404':
+          description: Redemption not found
+        '409':
+          description: Redemption is already processed or cancelled
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token
+
+  schemas:
+
+    CreateRedemptionRequest:
+      type: object
+      required:
+        - rewardId
+      properties:
+        rewardId:
+          type: integer
+          format: int64
+          example: 1001
+        quantity:
+          type: integer
+          minimum: 1
+          default: 1
+          example: 1
+        shippingAddress:
+          type: string
+          nullable: true
+          example: Jakarta, Indonesia

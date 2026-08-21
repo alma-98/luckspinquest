@@ -1,0 +1,216 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Admin Spins API
+  version: 1.0.0
+  description: Admin Lucky Spin configuration management API for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Admin Spins
+    description: Administrative Lucky Spin configuration management APIs
+
+paths:
+
+  /api/v1/admin/spins:
+    get:
+      tags:
+        - Admin Spins
+      summary: List spin configurations
+      description: List Lucky Spin configurations for administrative management.
+      operationId: adminListSpins
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Spin configurations retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+
+    post:
+      tags:
+        - Admin Spins
+      summary: Create spin configuration
+      description: Create a new Lucky Spin configuration.
+      operationId: adminCreateSpin
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpinConfigurationRequest'
+      responses:
+        '200':
+          description: Spin configuration created successfully
+        '201':
+          description: Spin configuration created successfully
+        '202':
+          description: Spin configuration creation accepted
+        '400':
+          description: Invalid spin configuration
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+
+  /api/v1/admin/spins/{id}:
+    get:
+      tags:
+        - Admin Spins
+      summary: Get spin configuration
+      description: Get a specific Lucky Spin configuration.
+      operationId: adminGetSpin
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/SpinId'
+      responses:
+        '200':
+          description: Spin configuration retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Spin configuration not found
+
+    put:
+      tags:
+        - Admin Spins
+      summary: Update spin configuration
+      description: Update an existing Lucky Spin configuration.
+      operationId: adminUpdateSpin
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/SpinId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpinConfigurationRequest'
+      responses:
+        '200':
+          description: Spin configuration updated successfully
+        '204':
+          description: Spin configuration updated successfully with no response body
+        '400':
+          description: Invalid spin configuration
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Spin configuration not found
+
+    delete:
+      tags:
+        - Admin Spins
+      summary: Delete spin configuration
+      description: Delete a Lucky Spin configuration.
+      operationId: adminDeleteSpin
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/SpinId'
+      responses:
+        '200':
+          description: Spin configuration deleted successfully
+        '204':
+          description: Spin configuration deleted successfully with no response body
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Spin configuration not found
+
+  /api/v1/admin/spins/{id}/status:
+    patch:
+      tags:
+        - Admin Spins
+      summary: Change spin status
+      description: Change the status of a Lucky Spin configuration.
+      operationId: adminChangeSpinStatus
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/SpinId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeSpinStatusRequest'
+      responses:
+        '200':
+          description: Spin status changed successfully
+        '204':
+          description: Spin status changed successfully with no response body
+        '400':
+          description: Invalid status
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Spin configuration not found
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: ADMIN JWT access token
+
+  parameters:
+
+    SpinId:
+      name: id
+      in: path
+      required: true
+      description: Lucky Spin configuration ID
+      schema:
+        type: string
+      example: "spin-001"
+
+  schemas:
+
+    SpinConfigurationRequest:
+      type: object
+      description: Lucky Spin configuration data.
+      properties:
+        name:
+          type: string
+          example: Daily Lucky Spin
+        description:
+          type: string
+          example: Daily spin configuration
+        status:
+          type: string
+          example: ACTIVE
+
+    ChangeSpinStatusRequest:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          example: ACTIVE
+          enum:
+            - ACTIVE
+            - INACTIVE
+            - DRAFT
+            - ARCHIVED

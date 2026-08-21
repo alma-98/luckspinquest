@@ -1,0 +1,32 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Settings API
+  version: 1.0.0
+  description: |
+    Public application settings API for LuckSpinQuest.
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Settings
+    description: Application settings APIs
+
+paths:
+
+  /api/v1/settings/public:
+    get:
+      tags: [Settings]
+      summary: Get public application settings
+      description: Get application settings that are safe to expose publicly.
+      operationId: getPublicSettings
+      security: []
+      responses:
+        '200':
+          description: Public application settings retrieved successfully
+        '404':
+          description: Public settings not found
+
+components: {}

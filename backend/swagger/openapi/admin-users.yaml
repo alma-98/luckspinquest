@@ -1,0 +1,279 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Admin Users API
+  version: 1.0.0
+  description: Admin user management API for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Admin Users
+    description: Administrative user management APIs
+
+paths:
+
+  /api/v1/admin/users:
+    get:
+      tags:
+        - Admin Users
+      summary: List users
+      description: List all users for administrative management.
+      operationId: adminListUsers
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Users retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+
+    post:
+      tags:
+        - Admin Users
+      summary: Create user
+      description: Create a new user as an administrator.
+      operationId: adminCreateUser
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminCreateUserRequest'
+      responses:
+        '200':
+          description: User created successfully
+        '201':
+          description: User created successfully
+        '202':
+          description: User creation accepted
+        '400':
+          description: Invalid request
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '409':
+          description: User already exists
+
+  /api/v1/admin/users/{id}:
+    get:
+      tags:
+        - Admin Users
+      summary: Get user detail
+      description: Get detailed information about a specific user.
+      operationId: adminGetUser
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: User detail retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: User not found
+
+    put:
+      tags:
+        - Admin Users
+      summary: Update user
+      description: Update an existing user as an administrator.
+      operationId: adminUpdateUser
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUpdateUserRequest'
+      responses:
+        '200':
+          description: User updated successfully
+        '204':
+          description: User updated successfully with no response body
+        '400':
+          description: Invalid request
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: User not found
+
+    delete:
+      tags:
+        - Admin Users
+      summary: Delete user
+      description: Delete a specific user as an administrator.
+      operationId: adminDeleteUser
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: User deleted successfully
+        '204':
+          description: User deleted successfully with no response body
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: User not found
+
+  /api/v1/admin/users/{id}/status:
+    patch:
+      tags:
+        - Admin Users
+      summary: Change user status
+      description: Change the status of a specific user.
+      operationId: adminChangeUserStatus
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeUserStatusRequest'
+      responses:
+        '200':
+          description: User status changed successfully
+        '204':
+          description: User status changed successfully with no response body
+        '400':
+          description: Invalid status
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: User not found
+
+  /api/v1/admin/users/{id}/role:
+    patch:
+      tags:
+        - Admin Users
+      summary: Change user role
+      description: Change the role assigned to a specific user.
+      operationId: adminChangeUserRole
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeUserRoleRequest'
+      responses:
+        '200':
+          description: User role changed successfully
+        '204':
+          description: User role changed successfully with no response body
+        '400':
+          description: Invalid role
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: User not found
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: ADMIN JWT access token
+
+  parameters:
+
+    UserId:
+      name: id
+      in: path
+      required: true
+      description: User ID
+      schema:
+        type: string
+      example: "01JUSER123456789"
+
+  schemas:
+
+    AdminCreateUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: player001
+        email:
+          type: string
+          format: email
+          example: player001@example.com
+        password:
+          type: string
+          format: password
+          example: Password123!
+        role:
+          type: string
+          example: USER
+
+    AdminUpdateUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: player001
+        email:
+          type: string
+          format: email
+          example: player001@example.com
+        displayName:
+          type: string
+          example: Player One
+
+    ChangeUserStatusRequest:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          example: ACTIVE
+          enum:
+            - ACTIVE
+            - INACTIVE
+            - SUSPENDED
+            - BANNED
+
+    ChangeUserRoleRequest:
+      type: object
+      required:
+        - role
+      properties:
+        role:
+          type: string
+          example: USER
+          enum:
+            - USER
+            - ADMIN

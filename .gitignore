@@ -1,0 +1,31 @@
+# Maven
+target/
+**/target/
+
+# Logs
+*.log
+logs/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+
+# Java
+*.class
+
+# Generated files
+*.jar
+*.war
+
+# Temporary
+*.tmp
+*.swp

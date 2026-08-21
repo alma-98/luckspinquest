@@ -1,0 +1,179 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Profile API
+  version: 1.0.0
+  description: User profile and security APIs for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Profile
+    description: Authenticated user profile APIs
+
+paths:
+
+  /api/v1/profile:
+    get:
+      tags:
+        - Profile
+      summary: Get profile
+      description: Get the profile of the currently authenticated user.
+      operationId: getProfile
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Profile retrieved successfully
+        '401':
+          description: Authentication required
+
+    put:
+      tags:
+        - Profile
+      summary: Update profile
+      description: Update the profile of the currently authenticated user.
+      operationId: updateProfile
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+      responses:
+        '200':
+          description: Profile updated successfully
+        '204':
+          description: Profile updated successfully with no response body
+        '400':
+          description: Invalid profile data
+        '401':
+          description: Authentication required
+
+  /api/v1/profile/avatar:
+    put:
+      tags:
+        - Profile
+      summary: Update avatar
+      description: Update the authenticated user's avatar.
+      operationId: updateAvatar
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - avatar
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+                  description: Avatar image file
+      responses:
+        '200':
+          description: Avatar updated successfully
+        '204':
+          description: Avatar updated successfully with no response body
+        '400':
+          description: Invalid avatar
+        '401':
+          description: Authentication required
+
+  /api/v1/profile/password:
+    put:
+      tags:
+        - Profile
+      summary: Change password
+      description: Change the authenticated user's password.
+      operationId: changePassword
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+      responses:
+        '200':
+          description: Password changed successfully
+        '204':
+          description: Password changed successfully with no response body
+        '400':
+          description: Invalid password request
+        '401':
+          description: Authentication required
+
+  /api/v1/profile/security:
+    get:
+      tags:
+        - Profile
+      summary: Get security information
+      description: Get security information for the authenticated user.
+      operationId: getSecurityInformation
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Security information retrieved successfully
+        '401':
+          description: Authentication required
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token
+
+  schemas:
+
+    UpdateProfileRequest:
+      type: object
+      properties:
+        displayName:
+          type: string
+          example: Player One
+        firstName:
+          type: string
+          example: Player
+        lastName:
+          type: string
+          example: One
+        phone:
+          type: string
+          example: "+628123456789"
+        dateOfBirth:
+          type: string
+          format: date
+          example: "1995-01-15"
+
+    ChangePasswordRequest:
+      type: object
+      required:
+        - currentPassword
+        - newPassword
+        - confirmPassword
+      properties:
+        currentPassword:
+          type: string
+          format: password
+          example: OldPassword123!
+        newPassword:
+          type: string
+          format: password
+          example: NewPassword123!
+        confirmPassword:
+          type: string
+          format: password
+          example: NewPassword123!

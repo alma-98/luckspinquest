@@ -1,0 +1,250 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest API
+  version: 1.0.0
+  description: LuckSpinQuest Backend REST API
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Authentication
+  - name: Users
+  - name: Admin Users
+  - name: Profile
+  - name: Dashboard
+  - name: Lucky Spin
+  - name: Admin Spins
+  - name: Spin Segments
+  - name: Quest
+  - name: Admin Quest
+
+paths:
+
+  # Authentication
+  /api/v1/auth/register:
+    $ref: './authentication.yaml#/paths/~1api~1v1~1auth~1register'
+  /api/v1/auth/login:
+    $ref: './authentication.yaml#/paths/~1api~1v1~1auth~1login'
+  /api/v1/auth/refresh:
+    $ref: './authentication.yaml#/paths/~1api~1v1~1auth~1refresh'
+  /api/v1/auth/logout:
+    $ref: './authentication.yaml#/paths/~1api~1v1~1auth~1logout'
+  /api/v1/auth/forgot-password:
+    $ref: './authentication.yaml#/paths/~1api~1v1~1auth~1forgot-password'
+  /api/v1/auth/reset-password:
+    $ref: './authentication.yaml#/paths/~1api~1v1~1auth~1reset-password'
+  /api/v1/auth/verify-email:
+    $ref: './authentication.yaml#/paths/~1api~1v1~1auth~1verify-email'
+  /api/v1/auth/resend-verification:
+    $ref: './authentication.yaml#/paths/~1api~1v1~1auth~1resend-verification'
+
+  # Users
+  /api/v1/users/me:
+    $ref: './users.yaml#/paths/~1api~1v1~1users~1me'
+  /api/v1/users/me/activity:
+    $ref: './users.yaml#/paths/~1api~1v1~1users~1me~1activity'
+  /api/v1/users/me/statistics:
+    $ref: './users.yaml#/paths/~1api~1v1~1users~1me~1statistics'
+
+  # Admin Users
+  /api/v1/admin/users:
+    $ref: './admin-users.yaml#/paths/~1api~1v1~1admin~1users'
+  /api/v1/admin/users/{id}:
+    $ref: './admin-users.yaml#/paths/~1api~1v1~1admin~1users~1{id}'
+  /api/v1/admin/users/{id}/status:
+    $ref: './admin-users.yaml#/paths/~1api~1v1~1admin~1users~1{id}~1status'
+  /api/v1/admin/users/{id}/role:
+    $ref: './admin-users.yaml#/paths/~1api~1v1~1admin~1users~1{id}~1role'
+
+  # Profile
+  /api/v1/profile:
+    $ref: './profile.yaml#/paths/~1api~1v1~1profile'
+  /api/v1/profile/avatar:
+    $ref: './profile.yaml#/paths/~1api~1v1~1profile~1avatar'
+  /api/v1/profile/password:
+    $ref: './profile.yaml#/paths/~1api~1v1~1profile~1password'
+  /api/v1/profile/security:
+    $ref: './profile.yaml#/paths/~1api~1v1~1profile~1security'
+
+  # Dashboard
+  /api/v1/dashboard:
+    $ref: './dashboard.yaml#/paths/~1api~1v1~1dashboard'
+
+  # Lucky Spin
+  /api/v1/spins:
+    $ref: './lucky-spin.yaml#/paths/~1api~1v1~1spins'
+  /api/v1/spins/active:
+    $ref: './lucky-spin.yaml#/paths/~1api~1v1~1spins~1active'
+  /api/v1/spins/{id}:
+    $ref: './lucky-spin.yaml#/paths/~1api~1v1~1spins~1{id}'
+  /api/v1/spins/play:
+    $ref: './lucky-spin.yaml#/paths/~1api~1v1~1spins~1play'
+  /api/v1/spins/history:
+    $ref: './lucky-spin.yaml#/paths/~1api~1v1~1spins~1history'
+  /api/v1/spins/history/{id}:
+    $ref: './lucky-spin.yaml#/paths/~1api~1v1~1spins~1history~1{id}'
+  /api/v1/spins/available:
+    $ref: './lucky-spin.yaml#/paths/~1api~1v1~1spins~1available'
+
+  # Admin Spins
+  /api/v1/admin/spins:
+    $ref: './admin-spins.yaml#/paths/~1api~1v1~1admin~1spins'
+  /api/v1/admin/spins/{id}:
+    $ref: './admin-spins.yaml#/paths/~1api~1v1~1admin~1spins~1{id}'
+  /api/v1/admin/spins/{id}/status:
+    $ref: './admin-spins.yaml#/paths/~1api~1v1~1admin~1spins~1{id}~1status'
+
+  # Spin Segments
+  /api/v1/admin/spins/{spinId}/segments:
+    $ref: './spin-segments.yaml#/paths/~1api~1v1~1admin~1spins~1{spinId}~1segments'
+  /api/v1/admin/spins/{spinId}/segments/{segmentId}:
+    $ref: './spin-segments.yaml#/paths/~1api~1v1~1admin~1spins~1{spinId}~1segments~1{segmentId}'
+
+  # Quest
+  /api/v1/quests:
+    $ref: './quest.yaml#/paths/~1api~1v1~1quests'
+  /api/v1/quests/daily:
+    $ref: './quest.yaml#/paths/~1api~1v1~1quests~1daily'
+  /api/v1/quests/weekly:
+    $ref: './quest.yaml#/paths/~1api~1v1~1quests~1weekly'
+  /api/v1/quests/special:
+    $ref: './quest.yaml#/paths/~1api~1v1~1quests~1special'
+  /api/v1/quests/{id}:
+    $ref: './quest.yaml#/paths/~1api~1v1~1quests~1{id}'
+  /api/v1/quests/progress:
+    $ref: './quest.yaml#/paths/~1api~1v1~1quests~1progress'
+  /api/v1/quests/{id}/progress:
+    $ref: './quest.yaml#/paths/~1api~1v1~1quests~1{id}~1progress'
+  /api/v1/quests/{id}/claim:
+    $ref: './quest.yaml#/paths/~1api~1v1~1quests~1{id}~1claim'
+
+  # Admin Quest
+  /api/v1/admin/quests:
+    $ref: './admin-quest.yaml#/paths/~1api~1v1~1admin~1quests'
+  /api/v1/admin/quests/{id}:
+    $ref: './admin-quest.yaml#/paths/~1api~1v1~1admin~1quests~1{id}'
+  /api/v1/admin/quests/{id}/status:
+    $ref: './admin-quest.yaml#/paths/~1api~1v1~1admin~1quests~1{id}~1status'
+
+
+  # Wallet
+  /api/v1/wallet:
+    $ref: './wallet.yaml#/paths/~1api~1v1~1wallet'
+  /api/v1/wallet/balance:
+    $ref: './wallet.yaml#/paths/~1api~1v1~1wallet~1balance'
+  /api/v1/wallet/transactions:
+    $ref: './wallet.yaml#/paths/~1api~1v1~1wallet~1transactions'
+  /api/v1/wallet/transactions/{id}:
+    $ref: './wallet.yaml#/paths/~1api~1v1~1wallet~1transactions~1{id}'
+  /api/v1/wallet/summary:
+    $ref: './wallet.yaml#/paths/~1api~1v1~1wallet~1summary'
+
+  # Admin Wallet
+  /api/v1/admin/wallets:
+    $ref: './admin-wallet.yaml#/paths/~1api~1v1~1admin~1wallets'
+  /api/v1/admin/wallets/{userId}:
+    $ref: './admin-wallet.yaml#/paths/~1api~1v1~1admin~1wallets~1{userId}'
+  /api/v1/admin/wallets/{userId}/adjust:
+    $ref: './admin-wallet.yaml#/paths/~1api~1v1~1admin~1wallets~1{userId}~1adjust'
+  /api/v1/admin/wallet-transactions:
+    $ref: './admin-wallet.yaml#/paths/~1api~1v1~1admin~1wallet-transactions'
+  /api/v1/admin/wallet-transactions/{id}:
+    $ref: './admin-wallet.yaml#/paths/~1api~1v1~1admin~1wallet-transactions~1{id}'
+
+  # Rewards
+  /api/v1/rewards:
+    $ref: './rewards.yaml#/paths/~1api~1v1~1rewards'
+  /api/v1/rewards/{id}:
+    $ref: './rewards.yaml#/paths/~1api~1v1~1rewards~1{id}'
+  /api/v1/rewards/categories:
+    $ref: './rewards.yaml#/paths/~1api~1v1~1rewards~1categories'
+  /api/v1/rewards/featured:
+    $ref: './rewards.yaml#/paths/~1api~1v1~1rewards~1featured'
+
+  # Admin Rewards
+  /api/v1/admin/rewards:
+    $ref: './admin-rewards.yaml#/paths/~1api~1v1~1admin~1rewards'
+  /api/v1/admin/rewards/{id}:
+    $ref: './admin-rewards.yaml#/paths/~1api~1v1~1admin~1rewards~1{id}'
+  /api/v1/admin/rewards/{id}/status:
+    $ref: './admin-rewards.yaml#/paths/~1api~1v1~1admin~1rewards~1{id}~1status'
+  # Withdrawals
+  /api/v1/withdrawals:
+    $ref: './withdrawals.yaml#/paths/~1api~1v1~1withdrawals'
+  /api/v1/withdrawals/{id}:
+    $ref: './withdrawals.yaml#/paths/~1api~1v1~1withdrawals~1{id}'
+  /api/v1/withdrawals/{id}/cancel:
+    $ref: './withdrawals.yaml#/paths/~1api~1v1~1withdrawals~1{id}~1cancel'
+
+  # Withdrawal Methods
+  /api/v1/withdrawal-methods:
+    $ref: './withdrawal-methods.yaml#/paths/~1api~1v1~1withdrawal-methods'
+  /api/v1/withdrawal-methods/{id}:
+    $ref: './withdrawal-methods.yaml#/paths/~1api~1v1~1withdrawal-methods~1{id}'
+
+  # Admin Withdrawals
+  /api/v1/admin/withdrawals:
+    $ref: './admin-withdrawals.yaml#/paths/~1api~1v1~1admin~1withdrawals'
+  /api/v1/admin/withdrawals/{id}:
+    $ref: './admin-withdrawals.yaml#/paths/~1api~1v1~1admin~1withdrawals~1{id}'
+  /api/v1/admin/withdrawals/{id}/approve:
+    $ref: './admin-withdrawals.yaml#/paths/~1api~1v1~1admin~1withdrawals~1{id}~1approve'
+  /api/v1/admin/withdrawals/{id}/reject:
+    $ref: './admin-withdrawals.yaml#/paths/~1api~1v1~1admin~1withdrawals~1{id}~1reject'
+  /api/v1/admin/withdrawals/{id}/processing:
+    $ref: './admin-withdrawals.yaml#/paths/~1api~1v1~1admin~1withdrawals~1{id}~1processing'
+  /api/v1/admin/withdrawals/{id}/complete:
+    $ref: './admin-withdrawals.yaml#/paths/~1api~1v1~1admin~1withdrawals~1{id}~1complete'
+
+  # Events
+  /api/v1/events:
+    $ref: './events.yaml#/paths/~1api~1v1~1events'
+  /api/v1/events/active:
+    $ref: './events.yaml#/paths/~1api~1v1~1events~1active'
+  /api/v1/events/upcoming:
+    $ref: './events.yaml#/paths/~1api~1v1~1events~1upcoming'
+  /api/v1/events/{id}:
+    $ref: './events.yaml#/paths/~1api~1v1~1events~1{id}'
+  /api/v1/events/{id}/join:
+    $ref: './events.yaml#/paths/~1api~1v1~1events~1{id}~1join'
+  /api/v1/events/{id}/leaderboard:
+    $ref: './events.yaml#/paths/~1api~1v1~1events~1{id}~1leaderboard'
+
+  # Admin Events
+  /api/v1/admin/events:
+    $ref: './admin-events.yaml#/paths/~1api~1v1~1admin~1events'
+  /api/v1/admin/events/{id}:
+    $ref: './admin-events.yaml#/paths/~1api~1v1~1admin~1events~1{id}'
+  /api/v1/admin/events/{id}/status:
+    $ref: './admin-events.yaml#/paths/~1api~1v1~1admin~1events~1{id}~1status'
+
+  # Referrals
+  /api/v1/referrals:
+    $ref: './referrals.yaml#/paths/~1api~1v1~1referrals'
+  /api/v1/referrals/code:
+    $ref: './referrals.yaml#/paths/~1api~1v1~1referrals~1code'
+  /api/v1/referrals/statistics:
+    $ref: './referrals.yaml#/paths/~1api~1v1~1referrals~1statistics'
+  /api/v1/referrals/apply:
+    $ref: './referrals.yaml#/paths/~1api~1v1~1referrals~1apply'
+
+  # Admin Referrals
+  /api/v1/admin/referrals:
+    $ref: './admin-referrals.yaml#/paths/~1api~1v1~1admin~1referrals'
+  /api/v1/admin/referrals/{id}:
+    $ref: './admin-referrals.yaml#/paths/~1api~1v1~1admin~1referrals~1{id}'
+  /api/v1/admin/referrals/statistics:
+    $ref: './admin-referrals.yaml#/paths/~1api~1v1~1admin~1referrals~1statistics'
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token

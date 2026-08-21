@@ -1,0 +1,177 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Quest API
+  version: 1.0.0
+  description: Quest APIs for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Quest
+    description: Authenticated quest APIs
+
+paths:
+
+  /api/v1/quests:
+    get:
+      tags:
+        - Quest
+      summary: List quests
+      description: List quests available to the authenticated user.
+      operationId: listQuests
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Quests retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/quests/daily:
+    get:
+      tags:
+        - Quest
+      summary: Get daily quests
+      description: Get daily quests for the authenticated user.
+      operationId: getDailyQuests
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Daily quests retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/quests/weekly:
+    get:
+      tags:
+        - Quest
+      summary: Get weekly quests
+      description: Get weekly quests for the authenticated user.
+      operationId: getWeeklyQuests
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Weekly quests retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/quests/special:
+    get:
+      tags:
+        - Quest
+      summary: Get special quests
+      description: Get special quests for the authenticated user.
+      operationId: getSpecialQuests
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Special quests retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/quests/{id}:
+    get:
+      tags:
+        - Quest
+      summary: Get quest detail
+      description: Get details of a specific quest.
+      operationId: getQuestDetail
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/QuestId'
+      responses:
+        '200':
+          description: Quest detail retrieved successfully
+        '401':
+          description: Authentication required
+        '404':
+          description: Quest not found
+
+  /api/v1/quests/progress:
+    get:
+      tags:
+        - Quest
+      summary: Get quest progress
+      description: Get quest progress for the authenticated user.
+      operationId: getQuestProgress
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Quest progress retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/quests/{id}/progress:
+    get:
+      tags:
+        - Quest
+      summary: Get specific quest progress
+      description: Get progress for a specific quest belonging to the authenticated user.
+      operationId: getSpecificQuestProgress
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/QuestId'
+      responses:
+        '200':
+          description: Quest progress retrieved successfully
+        '401':
+          description: Authentication required
+        '404':
+          description: Quest not found
+
+  /api/v1/quests/{id}/claim:
+    post:
+      tags:
+        - Quest
+      summary: Claim completed quest reward
+      description: Claim the reward for a completed quest.
+      operationId: claimQuestReward
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/QuestId'
+      responses:
+        '200':
+          description: Quest reward claimed successfully
+        '201':
+          description: Quest reward claim created successfully
+        '202':
+          description: Quest reward claim accepted
+        '400':
+          description: Quest is not completed or cannot be claimed
+        '401':
+          description: Authentication required
+        '404':
+          description: Quest not found
+        '409':
+          description: Quest reward already claimed
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token
+
+  parameters:
+
+    QuestId:
+      name: id
+      in: path
+      required: true
+      description: Quest ID
+      schema:
+        type: string
+      example: "quest-001"

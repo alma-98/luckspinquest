@@ -1,0 +1,181 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Admin Redemptions API
+  version: 1.0.0
+  description: |
+    Admin Redemptions API for LuckSpinQuest.
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Admin Redemptions
+    description: Administrative reward redemption management APIs
+
+paths:
+
+  /api/v1/admin/redemptions:
+    get:
+      tags: [Admin Redemptions]
+      summary: List redemptions
+      description: Get all reward redemptions for administrative review.
+      operationId: listAdminRedemptions
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Redemptions retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+
+  /api/v1/admin/redemptions/{id}:
+    get:
+      tags: [Admin Redemptions]
+      summary: Get redemption detail
+      description: Get detailed information about a specific redemption.
+      operationId: getAdminRedemption
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Redemption ID
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Redemption retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+        '404':
+          description: Redemption not found
+
+  /api/v1/admin/redemptions/{id}/approve:
+    patch:
+      tags: [Admin Redemptions]
+      summary: Approve redemption
+      description: Approve a pending reward redemption.
+      operationId: approveRedemption
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Redemption ID
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Redemption approved successfully
+        '204':
+          description: Redemption approved successfully
+        '400':
+          description: Redemption cannot be approved
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+        '404':
+          description: Redemption not found
+        '409':
+          description: Invalid redemption state
+
+  /api/v1/admin/redemptions/{id}/reject:
+    patch:
+      tags: [Admin Redemptions]
+      summary: Reject redemption
+      description: Reject a pending reward redemption.
+      operationId: rejectRedemption
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Redemption ID
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RejectRedemptionRequest'
+      responses:
+        '200':
+          description: Redemption rejected successfully
+        '204':
+          description: Redemption rejected successfully
+        '400':
+          description: Redemption cannot be rejected
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+        '404':
+          description: Redemption not found
+        '409':
+          description: Invalid redemption state
+
+  /api/v1/admin/redemptions/{id}/complete:
+    patch:
+      tags: [Admin Redemptions]
+      summary: Complete redemption
+      description: Mark an approved reward redemption as completed.
+      operationId: completeRedemption
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Redemption ID
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Redemption completed successfully
+        '204':
+          description: Redemption completed successfully
+        '400':
+          description: Redemption cannot be completed
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+        '404':
+          description: Redemption not found
+        '409':
+          description: Invalid redemption state
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT admin access token
+
+  schemas:
+
+    RejectRedemptionRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+          maxLength: 500
+          example: Invalid reward redemption request.

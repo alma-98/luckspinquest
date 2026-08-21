@@ -1,0 +1,217 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Admin Rewards API
+  version: 1.0.0
+  description: Administrative rewards management API for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Admin Rewards
+    description: Administrative reward management APIs
+
+paths:
+
+  /api/v1/admin/rewards:
+    get:
+      tags:
+        - Admin Rewards
+      summary: List rewards
+      operationId: adminListRewards
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Rewards retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+
+    post:
+      tags:
+        - Admin Rewards
+      summary: Create reward
+      operationId: adminCreateReward
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RewardRequest'
+      responses:
+        '200':
+          description: Reward created successfully
+        '201':
+          description: Reward created successfully
+        '202':
+          description: Reward creation accepted
+        '400':
+          description: Invalid reward data
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+
+  /api/v1/admin/rewards/{id}:
+    get:
+      tags:
+        - Admin Rewards
+      summary: Get reward detail
+      operationId: adminGetReward
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Reward ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reward detail retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Reward not found
+
+    put:
+      tags:
+        - Admin Rewards
+      summary: Update reward
+      operationId: adminUpdateReward
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Reward ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RewardRequest'
+      responses:
+        '200':
+          description: Reward updated successfully
+        '204':
+          description: Reward updated successfully
+        '400':
+          description: Invalid reward data
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Reward not found
+
+    delete:
+      tags:
+        - Admin Rewards
+      summary: Delete reward
+      operationId: adminDeleteReward
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Reward ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reward deleted successfully
+        '204':
+          description: Reward deleted successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Reward not found
+
+  /api/v1/admin/rewards/{id}/status:
+    patch:
+      tags:
+        - Admin Rewards
+      summary: Change reward status
+      operationId: adminChangeRewardStatus
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Reward ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RewardStatusRequest'
+      responses:
+        '200':
+          description: Reward status updated successfully
+        '204':
+          description: Reward status updated successfully
+        '400':
+          description: Invalid status
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Reward not found
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: ADMIN JWT access token
+
+  schemas:
+
+    RewardRequest:
+      type: object
+      description: Reward create/update request. Exact fields must be aligned with the backend DTO/entity.
+      properties:
+        name:
+          type: string
+          example: "100 Coins"
+        description:
+          type: string
+          example: "Reward containing 100 coins"
+        category:
+          type: string
+          example: "COINS"
+        status:
+          type: string
+          example: "ACTIVE"
+
+    RewardStatusRequest:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          example: "ACTIVE"

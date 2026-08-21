@@ -1,0 +1,184 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Admin Withdrawals API
+  version: 1.0.0
+  description: Administrative withdrawal management API for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Admin Withdrawals
+    description: Administrative withdrawal management APIs
+
+paths:
+
+  /api/v1/admin/withdrawals:
+    get:
+      tags:
+        - Admin Withdrawals
+      summary: List withdrawal requests
+      operationId: adminListWithdrawals
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Withdrawal requests retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+
+  /api/v1/admin/withdrawals/{id}:
+    get:
+      tags:
+        - Admin Withdrawals
+      summary: Get withdrawal detail
+      operationId: adminGetWithdrawal
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Withdrawal ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Withdrawal detail retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Withdrawal not found
+
+  /api/v1/admin/withdrawals/{id}/approve:
+    patch:
+      tags:
+        - Admin Withdrawals
+      summary: Approve withdrawal
+      operationId: adminApproveWithdrawal
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Withdrawal ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Withdrawal approved successfully
+        '204':
+          description: Withdrawal approved successfully
+        '400':
+          description: Withdrawal cannot be approved
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Withdrawal not found
+
+  /api/v1/admin/withdrawals/{id}/reject:
+    patch:
+      tags:
+        - Admin Withdrawals
+      summary: Reject withdrawal
+      operationId: adminRejectWithdrawal
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Withdrawal ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Withdrawal rejected successfully
+        '204':
+          description: Withdrawal rejected successfully
+        '400':
+          description: Withdrawal cannot be rejected
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Withdrawal not found
+
+  /api/v1/admin/withdrawals/{id}/processing:
+    patch:
+      tags:
+        - Admin Withdrawals
+      summary: Mark withdrawal as processing
+      operationId: adminProcessWithdrawal
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Withdrawal ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Withdrawal marked as processing
+        '204':
+          description: Withdrawal marked as processing
+        '400':
+          description: Withdrawal cannot be processed
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Withdrawal not found
+
+  /api/v1/admin/withdrawals/{id}/complete:
+    patch:
+      tags:
+        - Admin Withdrawals
+      summary: Mark withdrawal as completed
+      description: Mark withdrawal as completed after manual payment.
+      operationId: adminCompleteWithdrawal
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Withdrawal ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Withdrawal marked as completed
+        '204':
+          description: Withdrawal marked as completed
+        '400':
+          description: Withdrawal cannot be completed
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Withdrawal not found
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: ADMIN JWT access token

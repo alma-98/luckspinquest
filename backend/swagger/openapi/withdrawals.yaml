@@ -1,0 +1,134 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Withdrawals API
+  version: 1.0.0
+  description: User withdrawal REST API for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Withdrawals
+    description: User withdrawal APIs
+
+paths:
+
+  /api/v1/withdrawals:
+    get:
+      tags:
+        - Withdrawals
+      summary: List own withdrawal requests
+      operationId: listOwnWithdrawals
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Withdrawal requests retrieved successfully
+        '401':
+          description: Authentication required
+
+    post:
+      tags:
+        - Withdrawals
+      summary: Submit withdrawal request
+      operationId: createWithdrawal
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WithdrawalRequest'
+      responses:
+        '200':
+          description: Withdrawal request submitted successfully
+        '201':
+          description: Withdrawal request created successfully
+        '202':
+          description: Withdrawal request accepted
+        '400':
+          description: Invalid withdrawal request
+        '401':
+          description: Authentication required
+
+  /api/v1/withdrawals/{id}:
+    get:
+      tags:
+        - Withdrawals
+      summary: Get own withdrawal detail
+      operationId: getOwnWithdrawal
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Withdrawal ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Withdrawal detail retrieved successfully
+        '401':
+          description: Authentication required
+        '404':
+          description: Withdrawal not found
+
+  /api/v1/withdrawals/{id}/cancel:
+    post:
+      tags:
+        - Withdrawals
+      summary: Cancel pending withdrawal
+      operationId: cancelWithdrawal
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Withdrawal ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Withdrawal cancelled successfully
+        '201':
+          description: Cancellation request created
+        '202':
+          description: Cancellation request accepted
+        '400':
+          description: Withdrawal cannot be cancelled
+        '401':
+          description: Authentication required
+        '404':
+          description: Withdrawal not found
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: USER JWT access token
+
+  schemas:
+
+    WithdrawalRequest:
+      type: object
+      description: Withdrawal submission request. Exact fields must be aligned with the backend DTO/entity.
+      properties:
+        amount:
+          type: number
+          format: double
+          example: 100000
+        paymentAccountId:
+          type: string
+          example: "payment-account-001"
+        note:
+          type: string
+          example: "Withdrawal request"

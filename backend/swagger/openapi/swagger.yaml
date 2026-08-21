@@ -1,0 +1,45 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Swagger API
+  version: 1.0.0
+  description: |
+    Swagger UI and OpenAPI documentation endpoints for LuckSpinQuest.
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Swagger
+    description: API documentation endpoints
+
+paths:
+
+  /swagger-ui/index.html:
+    get:
+      tags: [Swagger]
+      summary: Swagger UI
+      description: Open the Swagger UI documentation interface.
+      operationId: getSwaggerUi
+      security: []
+      responses:
+        '200':
+          description: Swagger UI loaded successfully
+
+  /v3/api-docs:
+    get:
+      tags: [Swagger]
+      summary: OpenAPI specification
+      description: Get the generated OpenAPI specification.
+      operationId: getOpenApiSpecification
+      security: []
+      responses:
+        '200':
+          description: OpenAPI specification retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+
+components: {}

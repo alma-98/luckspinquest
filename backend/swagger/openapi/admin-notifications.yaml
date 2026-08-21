@@ -1,0 +1,146 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Admin Notifications API
+  version: 1.0.0
+  description: |
+    Admin Notifications API for LuckSpinQuest.
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Admin Notifications
+    description: Administrative notification management APIs
+
+paths:
+
+  /api/v1/admin/notifications:
+    post:
+      tags: [Admin Notifications]
+      summary: Create notification
+      description: Create a notification from an administrative account.
+      operationId: createAdminNotification
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNotificationRequest'
+      responses:
+        '200':
+          description: Notification created successfully
+        '201':
+          description: Notification created successfully
+        '202':
+          description: Notification creation accepted
+        '400':
+          description: Invalid notification data
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+
+    get:
+      tags: [Admin Notifications]
+      summary: List sent notifications
+      description: Get notifications created or sent by administrators.
+      operationId: listAdminNotifications
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Notifications retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+
+  /api/v1/admin/notifications/broadcast:
+    post:
+      tags: [Admin Notifications]
+      summary: Broadcast notification
+      description: Broadcast a notification to multiple users.
+      operationId: broadcastAdminNotification
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BroadcastNotificationRequest'
+      responses:
+        '200':
+          description: Notification broadcast successfully
+        '201':
+          description: Notification broadcast created successfully
+        '202':
+          description: Notification broadcast accepted
+        '400':
+          description: Invalid broadcast data
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT admin access token
+
+  schemas:
+
+    CreateNotificationRequest:
+      type: object
+      required:
+        - title
+        - message
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+          example: System Maintenance
+        message:
+          type: string
+          minLength: 1
+          example: Scheduled maintenance will begin tonight.
+        type:
+          type: string
+          example: SYSTEM
+        userId:
+          type: integer
+          format: int64
+          nullable: true
+          example: 1001
+
+    BroadcastNotificationRequest:
+      type: object
+      required:
+        - title
+        - message
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+          example: New Lucky Spin Event
+        message:
+          type: string
+          minLength: 1
+          example: A new Lucky Spin event is now available.
+        type:
+          type: string
+          example: EVENT
+        target:
+          type: string
+          example: ALL_USERS

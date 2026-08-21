@@ -1,0 +1,176 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Lucky Spin API
+  version: 1.0.0
+  description: Lucky Spin APIs for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Lucky Spin
+    description: Lucky Spin gameplay and history APIs
+
+paths:
+
+  /api/v1/spins:
+    get:
+      tags:
+        - Lucky Spin
+      summary: List available spin configurations
+      description: List available Lucky Spin configurations.
+      operationId: listSpins
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Spin configurations retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/spins/active:
+    get:
+      tags:
+        - Lucky Spin
+      summary: Get active spin
+      description: Get the currently active Lucky Spin configuration.
+      operationId: getActiveSpin
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Active spin retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/spins/{id}:
+    get:
+      tags:
+        - Lucky Spin
+      summary: Get spin detail
+      description: Get details of a specific Lucky Spin configuration.
+      operationId: getSpinDetail
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Spin configuration ID
+          schema:
+            type: string
+          example: "spin-001"
+      responses:
+        '200':
+          description: Spin detail retrieved successfully
+        '401':
+          description: Authentication required
+        '404':
+          description: Spin not found
+
+  /api/v1/spins/play:
+    post:
+      tags:
+        - Lucky Spin
+      summary: Play lucky spin
+      description: Execute a Lucky Spin for the authenticated user.
+      operationId: playLuckySpin
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaySpinRequest'
+      responses:
+        '200':
+          description: Spin played successfully
+        '201':
+          description: Spin result created successfully
+        '202':
+          description: Spin request accepted
+        '400':
+          description: Invalid spin request
+        '401':
+          description: Authentication required
+        '409':
+          description: Spin cannot be played
+
+  /api/v1/spins/history:
+    get:
+      tags:
+        - Lucky Spin
+      summary: Get spin history
+      description: Get Lucky Spin history for the authenticated user.
+      operationId: getSpinHistory
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Spin history retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/spins/history/{id}:
+    get:
+      tags:
+        - Lucky Spin
+      summary: Get spin result detail
+      description: Get details of a specific spin result.
+      operationId: getSpinResultDetail
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Spin result ID
+          schema:
+            type: string
+          example: "result-001"
+      responses:
+        '200':
+          description: Spin result detail retrieved successfully
+        '401':
+          description: Authentication required
+        '404':
+          description: Spin result not found
+
+  /api/v1/spins/available:
+    get:
+      tags:
+        - Lucky Spin
+      summary: Get available spins
+      description: Get Lucky Spins currently available to the authenticated user.
+      operationId: getAvailableSpins
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Available spins retrieved successfully
+        '401':
+          description: Authentication required
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token
+
+  schemas:
+
+    PlaySpinRequest:
+      type: object
+      description: Request to play a Lucky Spin.
+      properties:
+        spinId:
+          type: string
+          description: Spin configuration ID
+          example: "spin-001"

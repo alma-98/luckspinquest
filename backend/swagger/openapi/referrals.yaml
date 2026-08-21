@@ -1,0 +1,108 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Referrals API
+  version: 1.0.0
+  description: User referral APIs for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Referrals
+    description: Referral APIs
+
+paths:
+
+  /api/v1/referrals:
+    get:
+      tags:
+        - Referrals
+      summary: Get referrals
+      operationId: getReferrals
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Referrals retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/referrals/code:
+    get:
+      tags:
+        - Referrals
+      summary: Get referral code
+      operationId: getReferralCode
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Referral code retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/referrals/statistics:
+    get:
+      tags:
+        - Referrals
+      summary: Get referral statistics
+      operationId: getReferralStatistics
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Referral statistics retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/referrals/apply:
+    post:
+      tags:
+        - Referrals
+      summary: Apply referral code
+      operationId: applyReferralCode
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplyReferralRequest'
+      responses:
+        '200':
+          description: Referral code applied successfully
+        '201':
+          description: Referral successfully created
+        '202':
+          description: Referral application accepted
+        '400':
+          description: Invalid or unavailable referral code
+        '401':
+          description: Authentication required
+        '409':
+          description: Referral code already applied
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: USER JWT access token
+
+  schemas:
+
+    ApplyReferralRequest:
+      type: object
+      required:
+        - referralCode
+      properties:
+        referralCode:
+          type: string
+          description: Referral code to apply
+          example: LUCKSPIN123

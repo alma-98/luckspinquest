@@ -1,0 +1,95 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Admin Audit Logs API
+  version: 1.0.0
+  description: |
+    Administrative audit log API for LuckSpinQuest.
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Audit Logs
+    description: Administrative audit log and security event APIs
+
+paths:
+
+  /api/v1/admin/audit-logs:
+    get:
+      tags: [Audit Logs]
+      summary: List audit logs
+      description: Get audit logs for administrative review.
+      operationId: listAuditLogs
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Audit logs retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+
+  /api/v1/admin/audit-logs/{id}:
+    get:
+      tags: [Audit Logs]
+      summary: Get audit log detail
+      description: Get detailed information for a specific audit log.
+      operationId: getAuditLog
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Audit log ID
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Audit log retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+        '404':
+          description: Audit log not found
+
+  /api/v1/admin/audit-logs/user/{userId}:
+    get:
+      tags: [Audit Logs]
+      summary: Get user audit history
+      description: Get audit history associated with a specific user.
+      operationId: getUserAuditHistory
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: User audit history retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+        '404':
+          description: User not found
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT admin access token

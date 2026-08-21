@@ -1,0 +1,54 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest System API
+  version: 1.0.0
+  description: |
+    System monitoring and application information API for LuckSpinQuest.
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: System
+    description: Application health, information, and metrics APIs
+
+paths:
+
+  /actuator/health:
+    get:
+      tags: [System]
+      summary: Application health
+      description: Get application health status.
+      operationId: getHealth
+      security: []
+      responses:
+        '200':
+          description: Application is healthy
+        '503':
+          description: Application is unavailable or unhealthy
+
+  /actuator/info:
+    get:
+      tags: [System]
+      summary: Application information
+      description: Get application and build information.
+      operationId: getApplicationInfo
+      security: []
+      responses:
+        '200':
+          description: Application information retrieved successfully
+
+  /actuator/metrics:
+    get:
+      tags: [System]
+      summary: Application metrics
+      description: Get available application metrics.
+      operationId: getMetrics
+      security: []
+      responses:
+        '200':
+          description: Application metrics retrieved successfully
+
+components: {}

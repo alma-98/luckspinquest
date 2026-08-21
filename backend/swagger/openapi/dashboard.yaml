@@ -1,0 +1,41 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Dashboard API
+  version: 1.0.0
+  description: User dashboard summary API for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Dashboard
+    description: Authenticated user dashboard APIs
+
+paths:
+
+  /api/v1/dashboard:
+    get:
+      tags:
+        - Dashboard
+      summary: Get user dashboard summary
+      description: Get dashboard summary for the currently authenticated user.
+      operationId: getUserDashboard
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Dashboard summary retrieved successfully
+        '401':
+          description: Authentication required
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token

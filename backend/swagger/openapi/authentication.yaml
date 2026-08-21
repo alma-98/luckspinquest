@@ -1,0 +1,171 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Authentication API
+  version: 1.0.0
+  description: |
+    Authentication API for LuckSpinQuest.
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Authentication
+    description: User authentication and account security
+
+paths:
+
+  /api/v1/auth/register:
+    post:
+      tags: [Authentication]
+      summary: Register user
+      description: Register a new LuckSpinQuest user.
+      operationId: registerUser
+      security: []
+      responses:
+        '200':
+          description: Registration successful
+        '201':
+          description: User created successfully
+        '202':
+          description: Registration accepted
+        '400':
+          description: Invalid registration data
+        '409':
+          description: User already exists
+
+  /api/v1/auth/login:
+    post:
+      tags: [Authentication]
+      summary: Login user
+      description: Authenticate user and return JWT tokens.
+      operationId: loginUser
+      security: []
+      responses:
+        '200':
+          description: Login successful
+        '201':
+          description: Login processed
+        '202':
+          description: Login accepted
+        '401':
+          description: Invalid credentials
+
+  /api/v1/auth/refresh:
+    post:
+      tags: [Authentication]
+      summary: Refresh JWT token
+      description: Refresh an authenticated user's JWT token.
+      operationId: refreshToken
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Token refreshed successfully
+        '201':
+          description: Token refresh processed
+        '202':
+          description: Token refresh accepted
+        '401':
+          description: Authentication required
+
+  /api/v1/auth/logout:
+    post:
+      tags: [Authentication]
+      summary: Logout user
+      description: Logout the authenticated user.
+      operationId: logoutUser
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Logout successful
+        '201':
+          description: Logout processed
+        '202':
+          description: Logout accepted
+        '401':
+          description: Authentication required
+
+  /api/v1/auth/forgot-password:
+    post:
+      tags: [Authentication]
+      summary: Request password reset
+      description: Request a password reset.
+      operationId: forgotPassword
+      security: []
+      responses:
+        '200':
+          description: Password reset request processed
+        '201':
+          description: Password reset request created
+        '202':
+          description: Password reset request accepted
+        '400':
+          description: Invalid request
+
+  /api/v1/auth/reset-password:
+    post:
+      tags: [Authentication]
+      summary: Reset password
+      description: Reset password using a valid reset token.
+      operationId: resetPassword
+      security: []
+      responses:
+        '200':
+          description: Password reset successful
+        '201':
+          description: Password reset processed
+        '202':
+          description: Password reset accepted
+        '400':
+          description: Invalid or expired reset token
+
+  /api/v1/auth/verify-email:
+    post:
+      tags: [Authentication]
+      summary: Verify email
+      description: Verify the authenticated user's email.
+      operationId: verifyEmail
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Email verified successfully
+        '201':
+          description: Email verification processed
+        '202':
+          description: Email verification accepted
+        '400':
+          description: Invalid verification token
+        '401':
+          description: Authentication required
+
+  /api/v1/auth/resend-verification:
+    post:
+      tags: [Authentication]
+      summary: Resend verification
+      description: Resend email verification for the authenticated user.
+      operationId: resendVerification
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Verification email resent
+        '201':
+          description: Verification request created
+        '202':
+          description: Verification request accepted
+        '401':
+          description: Authentication required
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token

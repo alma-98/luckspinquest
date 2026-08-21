@@ -1,0 +1,130 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Admin Settings API
+  version: 1.0.0
+  description: |
+    Administrative system settings API for LuckSpinQuest.
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Admin Settings
+    description: Administrative system settings management APIs
+
+paths:
+
+  /api/v1/admin/settings:
+    get:
+      tags: [Admin Settings]
+      summary: Get system settings
+      description: Get system settings for administrative management.
+      operationId: getAdminSettings
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: System settings retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+
+    put:
+      tags: [Admin Settings]
+      summary: Update system settings
+      description: Replace or update system settings.
+      operationId: updateAdminSettings
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSettingsRequest'
+      responses:
+        '200':
+          description: System settings updated successfully
+        '204':
+          description: System settings updated successfully
+        '400':
+          description: Invalid settings data
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+
+  /api/v1/admin/settings/{key}:
+    patch:
+      tags: [Admin Settings]
+      summary: Update specific setting
+      description: Update a specific system setting by key.
+      operationId: updateAdminSetting
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: key
+          in: path
+          required: true
+          description: Setting key
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 100
+            example: maintenance_mode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSettingRequest'
+      responses:
+        '200':
+          description: Setting updated successfully
+        '204':
+          description: Setting updated successfully
+        '400':
+          description: Invalid setting data
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+        '404':
+          description: Setting not found
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT admin access token
+
+  schemas:
+
+    UpdateSettingsRequest:
+      type: object
+      required:
+        - settings
+      properties:
+        settings:
+          type: object
+          additionalProperties: true
+          example:
+            maintenance_mode: false
+            registration_enabled: true
+            max_daily_spins: 10
+
+    UpdateSettingRequest:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: string
+          example: "false"

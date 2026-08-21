@@ -1,0 +1,69 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Reports API
+  version: 1.0.0
+  description: |
+    Reports API for LuckSpinQuest.
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Reports
+    description: User report and history APIs
+
+paths:
+
+  /api/v1/reports/my-summary:
+    get:
+      tags: [Reports]
+      summary: User summary report
+      description: Get a summary report for the authenticated user.
+      operationId: getMySummaryReport
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User summary report retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/reports/my-spin-history:
+    get:
+      tags: [Reports]
+      summary: User spin report
+      description: Get spin history and statistics for the authenticated user.
+      operationId: getMySpinHistoryReport
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User spin history retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/reports/my-wallet-history:
+    get:
+      tags: [Reports]
+      summary: User wallet report
+      description: Get wallet transaction history for the authenticated user.
+      operationId: getMyWalletHistoryReport
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User wallet history retrieved successfully
+        '401':
+          description: Authentication required
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token

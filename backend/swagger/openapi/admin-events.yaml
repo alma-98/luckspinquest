@@ -1,0 +1,220 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Admin Events API
+  version: 1.0.0
+  description: Administrative event management API for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Admin Events
+    description: Administrative event management APIs
+
+paths:
+
+  /api/v1/admin/events:
+    get:
+      tags:
+        - Admin Events
+      summary: List events
+      operationId: adminListEvents
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Events retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+
+    post:
+      tags:
+        - Admin Events
+      summary: Create event
+      operationId: adminCreateEvent
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+      responses:
+        '200':
+          description: Event created successfully
+        '201':
+          description: Event created successfully
+        '202':
+          description: Event creation accepted
+        '400':
+          description: Invalid event data
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+
+  /api/v1/admin/events/{id}:
+    get:
+      tags:
+        - Admin Events
+      summary: Get event detail
+      operationId: adminGetEvent
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Event ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Event detail retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Event not found
+
+    put:
+      tags:
+        - Admin Events
+      summary: Update event
+      operationId: adminUpdateEvent
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Event ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+      responses:
+        '200':
+          description: Event updated successfully
+        '204':
+          description: Event updated successfully
+        '400':
+          description: Invalid event data
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Event not found
+
+    delete:
+      tags:
+        - Admin Events
+      summary: Delete event
+      operationId: adminDeleteEvent
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Event ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Event deleted successfully
+        '204':
+          description: Event deleted successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Event not found
+
+  /api/v1/admin/events/{id}/status:
+    patch:
+      tags:
+        - Admin Events
+      summary: Change event status
+      operationId: adminChangeEventStatus
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Event ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventStatusRequest'
+      responses:
+        '200':
+          description: Event status updated successfully
+        '204':
+          description: Event status updated successfully
+        '400':
+          description: Invalid event status
+        '401':
+          description: Authentication required
+        '403':
+          description: ADMIN role required
+        '404':
+          description: Event not found
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: ADMIN JWT access token
+
+  schemas:
+
+    EventRequest:
+      type: object
+      description: Event creation or update request.
+      properties:
+        name:
+          type: string
+          example: Lucky Weekend Event
+        description:
+          type: string
+          example: Special weekend event
+        startAt:
+          type: string
+          format: date-time
+        endAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          example: ACTIVE
+
+    EventStatusRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ACTIVE
+      required:
+        - status

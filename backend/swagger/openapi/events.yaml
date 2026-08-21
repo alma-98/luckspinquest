@@ -1,0 +1,143 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Events API
+  version: 1.0.0
+  description: User event APIs for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Events
+    description: Event APIs
+
+paths:
+
+  /api/v1/events:
+    get:
+      tags:
+        - Events
+      summary: List events
+      operationId: listEvents
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Events retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/events/active:
+    get:
+      tags:
+        - Events
+      summary: List active events
+      operationId: listActiveEvents
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Active events retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/events/upcoming:
+    get:
+      tags:
+        - Events
+      summary: List upcoming events
+      operationId: listUpcomingEvents
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Upcoming events retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/events/{id}:
+    get:
+      tags:
+        - Events
+      summary: Get event detail
+      operationId: getEvent
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Event ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Event detail retrieved successfully
+        '401':
+          description: Authentication required
+        '404':
+          description: Event not found
+
+  /api/v1/events/{id}/join:
+    post:
+      tags:
+        - Events
+      summary: Join event
+      operationId: joinEvent
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Event ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Event joined successfully
+        '201':
+          description: Event participation created
+        '202':
+          description: Join request accepted
+        '400':
+          description: Unable to join event
+        '401':
+          description: Authentication required
+        '404':
+          description: Event not found
+
+  /api/v1/events/{id}/leaderboard:
+    get:
+      tags:
+        - Events
+      summary: Get event leaderboard
+      operationId: getEventLeaderboard
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Event ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Event leaderboard retrieved successfully
+        '401':
+          description: Authentication required
+        '404':
+          description: Event not found
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: USER JWT access token

@@ -1,0 +1,97 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Leaderboard API
+  version: 1.0.0
+  description: |
+    Leaderboard API for LuckSpinQuest.
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Leaderboard
+    description: Leaderboard and ranking APIs
+
+paths:
+
+  /api/v1/leaderboards:
+    get:
+      tags: [Leaderboard]
+      summary: Get leaderboard
+      description: Get the current leaderboard.
+      operationId: getLeaderboard
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Leaderboard retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/leaderboards/daily:
+    get:
+      tags: [Leaderboard]
+      summary: Get daily leaderboard
+      description: Get the daily leaderboard.
+      operationId: getDailyLeaderboard
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Daily leaderboard retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/leaderboards/weekly:
+    get:
+      tags: [Leaderboard]
+      summary: Get weekly leaderboard
+      description: Get the weekly leaderboard.
+      operationId: getWeeklyLeaderboard
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Weekly leaderboard retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/leaderboards/monthly:
+    get:
+      tags: [Leaderboard]
+      summary: Get monthly leaderboard
+      description: Get the monthly leaderboard.
+      operationId: getMonthlyLeaderboard
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Monthly leaderboard retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/leaderboards/me:
+    get:
+      tags: [Leaderboard]
+      summary: Get current user ranking
+      description: Get the authenticated user's leaderboard ranking.
+      operationId: getMyLeaderboardRanking
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current user ranking retrieved successfully
+        '401':
+          description: Authentication required
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token

@@ -1,0 +1,105 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Wallet API
+  version: 1.0.0
+  description: Wallet REST API for LuckSpinQuest
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Wallet
+    description: User wallet APIs
+
+paths:
+
+  /api/v1/wallet:
+    get:
+      tags:
+        - Wallet
+      summary: Get wallet
+      operationId: getWallet
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Wallet retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/wallet/balance:
+    get:
+      tags:
+        - Wallet
+      summary: Get coin balance
+      operationId: getWalletBalance
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Coin balance retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/wallet/transactions:
+    get:
+      tags:
+        - Wallet
+      summary: Get wallet transactions
+      operationId: getWalletTransactions
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Wallet transactions retrieved successfully
+        '401':
+          description: Authentication required
+
+  /api/v1/wallet/transactions/{id}:
+    get:
+      tags:
+        - Wallet
+      summary: Get transaction detail
+      operationId: getWalletTransaction
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Wallet transaction ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transaction detail retrieved successfully
+        '401':
+          description: Authentication required
+        '404':
+          description: Transaction not found
+
+  /api/v1/wallet/summary:
+    get:
+      tags:
+        - Wallet
+      summary: Get wallet summary
+      operationId: getWalletSummary
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Wallet summary retrieved successfully
+        '401':
+          description: Authentication required
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: USER JWT access token

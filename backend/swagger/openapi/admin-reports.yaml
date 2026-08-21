@@ -1,0 +1,139 @@
+openapi: 3.0.3
+
+info:
+  title: LuckSpinQuest Admin Reports API
+  version: 1.0.0
+  description: |
+    Administrative reporting API for LuckSpinQuest.
+
+servers:
+  - url: http://localhost:8282
+    description: Local Development
+
+tags:
+  - name: Admin Reports
+    description: Administrative platform reporting APIs
+
+paths:
+
+  /api/v1/admin/reports/overview:
+    get:
+      tags: [Admin Reports]
+      summary: Overall platform report
+      description: Get an overall platform report for administrators.
+      operationId: getAdminReportOverview
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Overall platform report retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+
+  /api/v1/admin/reports/users:
+    get:
+      tags: [Admin Reports]
+      summary: User report
+      description: Get platform user statistics and report data.
+      operationId: getAdminUsersReport
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User report retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+
+  /api/v1/admin/reports/spins:
+    get:
+      tags: [Admin Reports]
+      summary: Spin report
+      description: Get platform spin activity and statistics.
+      operationId: getAdminSpinsReport
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Spin report retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+
+  /api/v1/admin/reports/coins:
+    get:
+      tags: [Admin Reports]
+      summary: Coin circulation report
+      description: Get platform coin circulation and economy statistics.
+      operationId: getAdminCoinsReport
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Coin circulation report retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+
+  /api/v1/admin/reports/rewards:
+    get:
+      tags: [Admin Reports]
+      summary: Reward report
+      description: Get platform reward statistics and distribution data.
+      operationId: getAdminRewardsReport
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Reward report retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+
+  /api/v1/admin/reports/withdrawals:
+    get:
+      tags: [Admin Reports]
+      summary: Withdrawal report
+      description: Get platform withdrawal statistics and transaction data.
+      operationId: getAdminWithdrawalsReport
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Withdrawal report retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+
+  /api/v1/admin/reports/revenue:
+    get:
+      tags: [Admin Reports]
+      summary: Revenue report
+      description: Get platform revenue and financial statistics.
+      operationId: getAdminRevenueReport
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Revenue report retrieved successfully
+        '401':
+          description: Authentication required
+        '403':
+          description: Admin access required
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT admin access token
