@@ -1,0 +1,315 @@
+openapi: 3.1.0
+info:
+  title: LuckSpinQuest Lucky Spin Admin API
+  version: 1.0.0
+  description: Admin Lucky Spin configuration with Probability, Controlled and Hybrid modes.
+
+paths:
+
+  /api/v1/admin/spins/{id}/mode:
+    patch:
+      tags:
+        - Admin Spin
+      summary: Change spin mode
+      operationId: changeSpinMode
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpinModeRequest'
+      responses:
+        '204':
+          description: Spin mode updated
+
+  /api/v1/admin/spins/{spinId}/rules:
+    get:
+      tags:
+        - Admin Spin Rule
+      summary: List spin rules
+      parameters:
+        - $ref: '#/components/parameters/SpinId'
+      responses:
+        '200':
+          description: Rules returned
+
+    post:
+      tags:
+        - Admin Spin Rule
+      summary: Create probability rule
+      parameters:
+        - $ref: '#/components/parameters/SpinId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpinRuleRequest'
+      responses:
+        '200':
+          description: Rule created
+        '400':
+          description: Invalid probability
+
+  /api/v1/admin/spins/{spinId}/rules/{ruleId}:
+    put:
+      tags:
+        - Admin Spin Rule
+      summary: Update probability rule
+      parameters:
+        - $ref: '#/components/parameters/SpinId'
+        - $ref: '#/components/parameters/RuleId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpinRuleRequest'
+      responses:
+        '200':
+          description: Rule updated
+
+    delete:
+      tags:
+        - Admin Spin Rule
+      summary: Delete probability rule
+      parameters:
+        - $ref: '#/components/parameters/SpinId'
+        - $ref: '#/components/parameters/RuleId'
+      responses:
+        '204':
+          description: Rule deleted
+
+  /api/v1/admin/spins/{spinId}/rules/validate:
+    post:
+      tags:
+        - Admin Spin Rule
+      summary: Validate total probability
+      parameters:
+        - $ref: '#/components/parameters/SpinId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/SpinRuleRequest'
+      responses:
+        '200':
+          description: Probability validation result
+        '400':
+          description: Total probability is not 100 percent
+
+  /api/v1/admin/spins/{spinId}/rules/publish:
+    post:
+      tags:
+        - Admin Spin Rule
+      summary: Publish immutable rule version
+      parameters:
+        - $ref: '#/components/parameters/SpinId'
+      responses:
+        '200':
+          description: Rule version published
+
+  /api/v1/admin/spin-controls:
+    get:
+      tags:
+        - Admin Spin Control
+      summary: List controlled spin assignments
+      responses:
+        '200':
+          description: Controlled assignments
+
+    post:
+      tags:
+        - Admin Spin Control
+      summary: Create controlled result
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpinControlRequest'
+      responses:
+        '200':
+          description: Controlled result created
+
+  /api/v1/admin/spin-controls/{id}:
+    get:
+      tags:
+        - Admin Spin Control
+      summary: Get controlled result
+      parameters:
+        - $ref: '#/components/parameters/ControlId'
+      responses:
+        '200':
+          description: Controlled result
+
+    put:
+      tags:
+        - Admin Spin Control
+      summary: Update controlled result
+      parameters:
+        - $ref: '#/components/parameters/ControlId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpinControlRequest'
+      responses:
+        '200':
+          description: Controlled result updated
+
+    delete:
+      tags:
+        - Admin Spin Control
+      summary: Delete controlled result
+      parameters:
+        - $ref: '#/components/parameters/ControlId'
+      responses:
+        '204':
+          description: Controlled result deleted
+
+  /api/v1/admin/spin-controls/hybrid:
+    post:
+      tags:
+        - Admin Spin Control
+      summary: Create hybrid constraint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HybridSpinConstraintRequest'
+      responses:
+        '200':
+          description: Hybrid constraint created
+
+  /api/v1/spins/play:
+    post:
+      tags:
+        - Lucky Spin
+      summary: Play spin
+      description: >
+        Executes the configured wheel mode. Probability uses weighted random,
+        Controlled uses an active admin assignment, and Hybrid applies admin
+        constraints before weighted random selection.
+      responses:
+        '200':
+          description: Spin result
+
+components:
+
+  parameters:
+
+    SpinId:
+      name: spinId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+    RuleId:
+      name: ruleId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+    ControlId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  schemas:
+
+    SpinModeRequest:
+      type: object
+      required:
+        - spinMode
+      properties:
+        spinMode:
+          type: string
+          enum:
+            - PROBABILITY
+            - CONTROLLED
+            - HYBRID
+
+    SpinRuleRequest:
+      type: object
+      required:
+        - segmentId
+        - probability
+      properties:
+        segmentId:
+          type: integer
+          format: int64
+        probability:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+
+    SpinControlRequest:
+      type: object
+      required:
+        - userId
+        - wheelId
+        - controlType
+      properties:
+        userId:
+          type: integer
+          format: int64
+        wheelId:
+          type: integer
+          format: int64
+        segmentId:
+          type: integer
+          format: int64
+        controlType:
+          type: string
+          enum:
+            - FORCE
+            - EXCLUDE
+            - GUARANTEE
+        targetSpinNumber:
+          type: integer
+        effectiveFrom:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+
+    HybridSpinConstraintRequest:
+      type: object
+      required:
+        - userId
+        - wheelId
+        - excludedSegmentIds
+      properties:
+        userId:
+          type: integer
+          format: int64
+        wheelId:
+          type: integer
+          format: int64
+        excludedSegmentIds:
+          type: array
+          items:
+            type: integer
+            format: int64

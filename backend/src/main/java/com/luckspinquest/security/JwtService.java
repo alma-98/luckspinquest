@@ -76,6 +76,12 @@ public class JwtService {
             Claims claims = extractAllClaims(token);
             return claims.getExpiration().after(new Date());
         } catch (Exception e) {
+            System.err.println(
+                    "JWT VALIDATION FAILED: " +
+                    e.getClass().getSimpleName() +
+                    " - " +
+                    e.getMessage()
+            );
             return false;
         }
     }
